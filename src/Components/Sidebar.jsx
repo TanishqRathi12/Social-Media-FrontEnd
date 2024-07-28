@@ -20,7 +20,7 @@ export const Sidebar = () => {
           )}
         </button>
       </div>
-      <div className="hidden sm:flex flex-col w-24 sm:w-64 min-h-screen fixed bg-gray-600">
+      <div className="hidden sm:flex flex-col w-24 sm:w-64 min-h-screen fixed bg-gray-600 mt-16">
         <nav className="flex-grow">
           <ul className="space-y-2">
             <Link to="/">
