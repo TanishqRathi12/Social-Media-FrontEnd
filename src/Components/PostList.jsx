@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { commentContext } from '../Context/context';
+import CommentList from "../Components/CommentList";
+import { LikeContext } from '../Context/context';
+import Like from './Like';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -29,13 +33,12 @@ async function fetchData() {
                 <div key={index} className=' m-16 flex-col'>
                     <img src={posts.urlToImage} alt="User Post"  className='w-full h-64 sm:h-80 sm:w-80 object-cover'/>
                     <h1 className='text-2xl sm:w-80'>{posts.caption}</h1>
-                    <p className='text-lg sm:w-80'>{posts.comment}</p>
-                    <div className='flex items-center'>
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1'>
-                            <img src="https://pngimg.com/uploads/like/small/like_PNG84.png" alt="Like" className='h-5 w-5' />
-                        </button>
-                        <span className='ml-2'>{posts.likes} Likes</span>
-                    </div>
+                    <LikeContext.Provider value={posts.Like}>
+                        <Like/>
+                    </LikeContext.Provider>
+                    <commentContext.Provider value={posts.author}>
+                        <CommentList/>
+                    </commentContext.Provider>
                     <div className='flex items-center'>
                         <input type='text' placeholder='Add a comment' className='border border-gray-300 rounded-md p-1 m-1' value={comment[posts.urlToImage]} onChange={(e)=>handleChange(e,posts.urlToImage)}/>
                         <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1' onClick={()=>handleClick(posts.urlToImage)}>
