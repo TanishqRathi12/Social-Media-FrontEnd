@@ -1,4 +1,5 @@
 import React from 'react';
+//import MyPosts from './MyPosts';
 
 const UserProfile = () => {
     return (
@@ -10,6 +11,7 @@ const UserProfile = () => {
                             src="https://randomuser.me/api/portraits/women/21.jpg" alt=""/>
                         <div class="py-2">
                             <h3 class="font-bold text-2xl text-gray-800 dark:text-white mb-1">Cait Genevieve</h3>
+                            <p class="text-gray-700 dark:text-gray-400 mt-2">Nulla facilisi. Sed euismod justo id nunc tincidunt, sed lacinia nunc tincidunt. Nulla facilisi.</p>
                         </div>
                     </div>
                     <div class="flex gap-2 px-2">
@@ -20,7 +22,15 @@ const UserProfile = () => {
                     </div>
                 </div>
             </div>
-    </div>
+            <div>
+                <div class="mt-8"></div>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">My Posts</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        
+                    </div>
+            </div>
+            {/* <MyPosts/> */}
+        </div>
     
     );
 };
