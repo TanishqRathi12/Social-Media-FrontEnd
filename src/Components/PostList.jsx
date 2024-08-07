@@ -3,6 +3,7 @@ import { commentContext } from '../Context/context';
 import CommentList from "../Components/CommentList";
 import { LikeContext } from '../Context/context';
 import Like from './Like';
+import CreateButton from './CreateButton';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -29,6 +30,7 @@ async function fetchData() {
 
     return (
         <div className='pt-20 pl-0  sm:pt-20 sm:pl-72 sm:flex' >
+            <CreateButton/>
             {posts.map((posts, index)=>(
                 <div key={index} className=' m-16 flex-col'>
                     <img src={posts.urlToImage} alt="User Post"  className='w-full h-64 sm:h-80 sm:w-80 object-cover'/>

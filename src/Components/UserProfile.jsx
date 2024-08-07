@@ -1,5 +1,6 @@
 import React from 'react';
 //import MyPosts from './MyPosts';
+import {Link} from 'react-router-dom';
 
 const UserProfile = () => {
     return (
@@ -15,10 +16,10 @@ const UserProfile = () => {
                         </div>
                     </div>
                     <div class="flex gap-2 px-2">
-                        <button
+                    <Link to="/EditUser"> <button 
                             class="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:bg-blue-800 dark:hover:bg-blue-900 px-4 py-2">
-                            Edit Profile
-                        </button>
+                            Edit Profile 
+                        </button></Link>
                     </div>
                 </div>
             </div>

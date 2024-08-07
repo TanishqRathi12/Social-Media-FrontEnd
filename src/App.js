@@ -4,6 +4,8 @@ import Home from "./Pages/Home";
 import Navbar from "./Components/Navbar"; 
 import Profile from "./Pages/Profile";
 import Explore from "./Pages/Explore";
+import CreatePost from "./Pages/CreatePost";
+import EditUser from "./Pages/EditUser";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +26,26 @@ function App() {
           <Navbar />
           <Sidebar />
           <Profile />
+        </>
+      ),
+    },
+    {
+      path: "/CreatePost",
+      element: (
+        <>
+          <Navbar />
+          <Sidebar />
+          <CreatePost />
+        </>
+      ),
+    },
+    {
+      path: "/EditUser",
+      element: (
+        <>
+          <Navbar />
+          <Sidebar />
+          <EditUser />
         </>
       ),
     },
