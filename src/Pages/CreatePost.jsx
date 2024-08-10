@@ -4,6 +4,7 @@ const CreatePost = () => {
     const [image, setImage] = useState(null);
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
+    const [uploadStatus, setUploadStatus] = useState('');
 
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
@@ -18,9 +19,40 @@ const CreatePost = () => {
         setContent(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission
+
+        if (!image) {
+            setUploadStatus('Please select an image to upload.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('author', author);
+        formData.append('content', content);
+
+        try {
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                setUploadStatus('Post created successfully!');
+                console.log(result); 
+                setImage(null);
+                setAuthor('');
+                setContent('');
+            } else {
+                setUploadStatus(`Failed to create post: ${result.message}`);
+            }
+        } catch (err) {
+            setUploadStatus(`Error creating post: ${err.message}`);
+            console.error('Error creating post:', err);
+        }
     };
 
     return (
@@ -47,7 +79,7 @@ const CreatePost = () => {
                     />
                 </div>
                 <div className="mb-6">
-                    <label htmlFor="content" className="block text-left mb-2 font-bold text-gray-700">Content</label>
+                    <label htmlFor="content" className="block text-left mb-2 font-bold text-gray-700">Caption</label>
                     <textarea 
                         id="content" 
                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
@@ -62,6 +94,7 @@ const CreatePost = () => {
                 >
                     Submit
                 </button>
+                {uploadStatus && <p className="mt-4 text-red-500">{uploadStatus}</p>}
             </form>
         </div>
     );
