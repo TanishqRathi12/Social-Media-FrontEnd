@@ -1,31 +1,92 @@
 import React, { useState } from 'react';
+import axios from "axios";
+import axiosPlus from "../Components/axios";
+import {jwtDecode} from 'jwt-decode';  
+import { useNavigate } from 'react-router-dom';
 
 const EditUser = () => {
-    const [name, setName] = useState('');
-    const [image, setImage] = useState('');
-    const [bio, setBio] = useState('');
+    const [username, setUsername] = useState('');
+    const [image, setImage] = useState(null);
+    const [Bio, setBio] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const uploadImage = async () => {
+        const data = new FormData();
+        data.append('file', image);
+        data.append('upload_preset', 'MyCloud');
+        data.append('cloud_name', 'divlsorxk');
+        try {
+            const response = await axios.post('https://api.cloudinary.com/v1_1/divlsorxk/image/upload', data);
+            console.log(response.data.url);
+            return response.data.url;
+        } catch (err) {
+            console.log(err.message);
+            throw new Error('Image upload failed');
+        }
+    };
 
     const handleNameChange = (e) => {
-        setName(e.target.value);
+        setUsername(e.target.value);
     };
 
     const handleImageChange = (e) => {
-        setImage(e.target.value);
+        setImage(e.target.files[0]);
     };
 
     const handleBioChange = (e) => {
         setBio(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your logic to update the user here
+
+        let ProfilePicture = null;
+        if (image) {
+            try {
+                ProfilePicture = await uploadImage();
+            } catch (err) {
+                setError('Failed to upload image');
+                return;
+            }
+        }
+
+        const formData = new FormData();
+        formData.append('username', username);
+        if (ProfilePicture) {
+            formData.append('ProfilePicture', ProfilePicture);
+        }
+        formData.append('Bio', Bio);
+
+        try {
+            const token = localStorage.getItem('token');
+            const decoded = jwtDecode(token);
+            const userId = decoded.id;
+
+            const response = await axiosPlus.put(`/updateUser/${userId}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            console.log(response.data);
+            console.log('Edit form submitted');
+            setUsername('');
+            setImage(null);
+            setBio('');
+            setError('');
+            navigate('/profile');
+        } catch (err) {
+            console.log(err.message);
+            setError('Failed to update user. Please try again.');
+        }
     };
 
     return (
         <div className="container mx-auto text-center pt-32 sm:pt-28 max-w-lg">
             <h1 className="text-2xl font-bold mb-6">Edit User</h1>
             <form onSubmit={handleSubmit} className="bg-white p-6 shadow-lg rounded-lg">
+                {error && <p className="text-red-500">{error}</p>}
                 <div className="mb-6">
                     <label htmlFor="name" className="block text-left mb-2 font-bold text-gray-700">
                         Name
@@ -33,7 +94,7 @@ const EditUser = () => {
                     <input
                         type="text"
                         id="name"
-                        value={name}
+                        value={username}
                         onChange={handleNameChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -45,7 +106,6 @@ const EditUser = () => {
                     <input
                         type="file"
                         id="image"
-                        value={image}
                         onChange={handleImageChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -56,7 +116,7 @@ const EditUser = () => {
                     </label>
                     <textarea
                         id="bio"
-                        value={bio}
+                        value={Bio}
                         onChange={handleBioChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         rows="4"

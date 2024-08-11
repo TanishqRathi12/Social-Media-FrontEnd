@@ -23,6 +23,7 @@ function SearchComp() {
 
   return (
     <searchContest.Provider value={searchResults}>
+       <h1 className="text-xl font-semibold text-gray-600 sm:pl-72 pt-16">This feature is currently in development and will be available globally soon</h1>
       <div className="bg-gray-400 dark:bg-gray-700 h-screen w-screen flex flex-col pt-44 items-center">
         <div>
           <form onSubmit={handleSubmit} className="max-w-[880px] w-full px-4">

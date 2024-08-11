@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
-import { useAuth } from '../Context/AuthContext';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import  axios from '../Components/axios';
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useAuth();
+    const Navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your backend connection logic here
-        console.log('Signup form submitted');
-        login();
+        try{
+            const response = await axios.post("/createUser",{
+                username,
+                email,
+                password
+            });
+            const {token} = response.data;
+            localStorage.setItem('token', token);
+            console.log(response.data);
+            console.log('Signup form submitted');
+            setUsername('');
+            setEmail('');
+            setPassword('');
+        Navigate('/login');
+        }catch(err){
+            console.log(err.message);
+            setUsername('');
+            setEmail('');
+            setPassword('');
+        }
     };
 
     return (
@@ -30,7 +49,7 @@ const SignUp = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" required htmlFor="email">Email</label>
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="email"

@@ -1,53 +1,91 @@
 import React, { useState } from 'react';
+import {jwtDecode} from 'jwt-decode'; // Fixed import for jwt-decode
+import axios from 'axios';
+import axiosPlus from '../Components/axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
-    const [image, setImage] = useState(null);
+    const [imaged, setImaged] = useState(null);
     const [author, setAuthor] = useState('');
-    const [content, setContent] = useState('');
+    const [caption, setCaption] = useState('');
     const [uploadStatus, setUploadStatus] = useState('');
+    const navigate = useNavigate();
+
+    const uploadImage = async () => {
+        const data = new FormData();
+        data.append('file', imaged);
+        data.append('upload_preset', 'MyCloud');
+        data.append('cloud_name', 'divlsorxk');
+
+        try {
+            const response = await axios.post('https://api.cloudinary.com/v1_1/divlsorxk/image/upload', data);
+            console.log('Image Upload Success:', response.data.url);
+            return response.data.url;
+        } catch (err) {
+            console.error('Image Upload Failed:', err.message);
+            throw new Error('Image upload failed');
+        }
+    };
 
     const handleImageChange = (e) => {
-        const selectedImage = e.target.files[0];
-        setImage(selectedImage);
+        setImaged(e.target.files[0]);
     };
 
     const handleAuthorChange = (e) => {
         setAuthor(e.target.value);
     };
 
-    const handleContentChange = (e) => {
-        setContent(e.target.value);
+    const handleCaptionChange = (e) => {
+        setCaption(e.target.value);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!image) {
+        if (!imaged) {
             setUploadStatus('Please select an image to upload.');
             return;
         }
 
-        const formData = new FormData();
-        formData.append('image', image);
-        formData.append('author', author);
-        formData.append('content', content);
+        let image = null;
+        try {
+            image = await uploadImage();
+        } catch (err) {
+            setUploadStatus('Failed to upload image.');
+            return;
+        }
 
         try {
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData,
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setUploadStatus('No authentication token found.');
+                return;
+            }
+
+            const decoded = jwtDecode(token);
+            const userId = decoded.id;
+
+            const formData = new FormData();
+            formData.append('image', image);
+            formData.append('author', author);
+            formData.append('caption', caption);
+            formData.append('userId', userId);
+
+            const response = await axiosPlus.post(`/createPost`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
-            const result = await response.json();
-
-            if (response.ok) {
+            if (response.status === 201) { 
                 setUploadStatus('Post created successfully!');
-                console.log(result); 
-                setImage(null);
+                console.log(response.data);
+                setImaged(null);
                 setAuthor('');
-                setContent('');
+                setCaption('');
+                navigate('/profile');
             } else {
-                setUploadStatus(`Failed to create post: ${result.message}`);
+                setUploadStatus(`Failed to create post: ${response.data.message}`);
             }
         } catch (err) {
             setUploadStatus(`Error creating post: ${err.message}`);
@@ -79,17 +117,17 @@ const CreatePost = () => {
                     />
                 </div>
                 <div className="mb-6">
-                    <label htmlFor="content" className="block text-left mb-2 font-bold text-gray-700">Caption</label>
+                    <label htmlFor="caption" className="block text-left mb-2 font-bold text-gray-700">Caption</label>
                     <textarea 
-                        id="content" 
+                        id="caption" 
                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                        value={content} 
-                        onChange={handleContentChange} 
+                        value={caption} 
+                        onChange={handleCaptionChange} 
                         rows="4"
                     ></textarea>
                 </div>
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
                 >
                     Submit

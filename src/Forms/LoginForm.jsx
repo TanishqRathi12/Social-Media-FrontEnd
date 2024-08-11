@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../Context/AuthContext';
 import { Link } from 'react-router-dom'; 
 import { useNavigate } from 'react-router-dom';
+import axios from "../Components/axios"
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -9,14 +10,26 @@ const LoginForm = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        // Add your login logic here
-        console.log('Login form submitted');
-        console.log('Email:', email);
-        console.log('Password:', password);
-        login(); 
-        navigate('/');
+        try{
+            const response = await axios.post("/login",{
+                email,
+                password
+            });
+            console.log('Login form submitted');
+            console.log(response);
+            login(); 
+            setEmail('');
+            setPassword('');
+            navigate('/'); 
+        }catch(err){
+            console.log(err.message);
+            setEmail('');
+            setPassword('');
+            alert('Invalid email or password');
+        }
+        
     };
 
     return (
@@ -64,3 +77,5 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+
