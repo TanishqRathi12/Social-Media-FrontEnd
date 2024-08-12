@@ -1,43 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAuth } from '../Context/AuthContext';
-import { Link } from 'react-router-dom'; 
-import { useNavigate } from 'react-router-dom';
-import axios from "../Components/axios"
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "../Components/axios";
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
-        try{
-            const response = await axios.post("/login",{
+        try {
+            const response = await axios.post("/login", {
                 email,
-                password
+                password,
             });
             console.log('Login form submitted');
             console.log(response);
-            login(); 
+            login();
             setEmail('');
             setPassword('');
-            navigate('/'); 
-        }catch(err){
+            setErrorMessage(''); 
+            navigate('/');
+        } catch (err) {
             console.log(err.message);
             setEmail('');
             setPassword('');
-            alert('Invalid email or password');
+            setErrorMessage('Invalid email or password. Please try again.');
         }
-        
-    };
+    }, [email, password, login, navigate]);
 
     return (
-        <div className="flex justify-center items-center h-screen">
-            <form className="w-full max-w-sm bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
-                <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <div className="flex justify-center items-center h-screen bg-gray-100">
+            <form
+                className="w-full max-w-sm bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4"
+                onSubmit={handleSubmit}
+            >
+                <h2 className="text-2xl font-extrabold mb-6 text-center text-gray-900">
+                    Login
+                </h2>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
+                    <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="email"
+                    >
+                        Email
+                    </label>
                     <input
                         type="email"
                         id="email"
@@ -45,30 +55,48 @@ const LoginForm = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Enter your email"
+                        required
                     />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password</label>
+                <div className="mb-6">
+                    <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="password"
+                    >
+                        Password
+                    </label>
                     <input
                         type="password"
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Enter your password"
+                        required
                     />
                 </div>
+                {errorMessage && (
+                    <div className="mb-4 text-red-500 text-sm">
+                        {errorMessage}
+                    </div>
+                )}
                 <div className="flex items-center justify-between">
                     <button
                         type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out"
                     >
                         Login
                     </button>
                 </div>
-                <div className="mt-4">
-                    <p className="text-sm text-gray-600">Don't have an account? 
-                        <Link to="/signup" className="text-blue-500 hover:text-blue-800 ml-1">Sign Up</Link>
+                <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-600">
+                        Don't have an account?{' '}
+                        <Link
+                            to="/signup"
+                            className="text-blue-500 hover:text-blue-800 font-bold"
+                        >
+                            Sign Up
+                        </Link>
                     </p>
                 </div>
             </form>
@@ -77,5 +105,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
-

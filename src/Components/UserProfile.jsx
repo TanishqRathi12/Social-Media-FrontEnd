@@ -49,15 +49,15 @@ const UserProfile = () => {
           <div className="text-center my-4">
             <img
               className="h-52 w-52 rounded-full border-4 border-white dark:border-gray-800 mx-auto"
-              src={userData.image || "https://randomuser.me/api/portraits/women/21.jpg"}
+              src={userData.image}
               alt="User Profile"
             />
             <div className="py-2">
               <h3 className="font-bold text-2xl text-gray-800 dark:text-white mb-1">
-                {userData.name || 'Cait Genevieve'}
+                {userData.name}
               </h3>
               <p className="text-gray-700 dark:text-gray-400 mt-2">
-                {userData.Bio || 'Nulla facilisi. Sed euismod justo id nunc tincidunt, sed lacinia nunc tincidunt. Nulla facilisi.'}
+                {userData.Bio}
               </p>
             </div>
           </div>
