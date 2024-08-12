@@ -9,6 +9,7 @@ const EditUser = () => {
     const [image, setImage] = useState(null);
     const [Bio, setBio] = useState('');
     const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false); 
     const navigate = useNavigate();
 
     const uploadImage = async () => {
@@ -41,12 +42,15 @@ const EditUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setIsSubmitting(true); 
+
         let ProfilePicture = null;
         if (image) {
             try {
                 ProfilePicture = await uploadImage();
             } catch (err) {
                 setError('Failed to upload image');
+                setIsSubmitting(false); 
                 return;
             }
         }
@@ -75,10 +79,14 @@ const EditUser = () => {
             setImage(null);
             setBio('');
             setError('');
-            navigate('/profile');
+            setTimeout(() => {
+                setIsSubmitting(false); 
+                navigate('/profile');
+            }, 10000);
         } catch (err) {
             console.log(err.message);
             setError('Failed to update user. Please try again.');
+            setIsSubmitting(false); 
         }
     };
 
@@ -96,7 +104,8 @@ const EditUser = () => {
                         id="name"
                         value={username}
                         onChange={handleNameChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : ''}`}
+                        disabled={isSubmitting}
                     />
                 </div>
                 <div className="mb-6">
@@ -107,7 +116,8 @@ const EditUser = () => {
                         type="file"
                         id="image"
                         onChange={handleImageChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : ''}`}
+                        disabled={isSubmitting}
                     />
                 </div>
                 <div className="mb-6">
@@ -118,15 +128,17 @@ const EditUser = () => {
                         id="bio"
                         value={Bio}
                         onChange={handleBioChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : ''}`}
                         rows="4"
+                        disabled={isSubmitting}
                     />
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+                    className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ${isSubmitting ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={isSubmitting}
                 >
-                    Save
+                    {isSubmitting ? 'Saving...' : 'Save'}
                 </button>
             </form>
         </div>

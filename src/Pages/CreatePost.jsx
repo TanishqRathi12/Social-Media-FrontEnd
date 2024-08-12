@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {jwtDecode} from 'jwt-decode'; // Fixed import for jwt-decode
+import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
 import axiosPlus from '../Components/axios';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ const CreatePost = () => {
     const [author, setAuthor] = useState('');
     const [caption, setCaption] = useState('');
     const [uploadStatus, setUploadStatus] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false); 
     const navigate = useNavigate();
 
     const uploadImage = async () => {
@@ -47,11 +48,14 @@ const CreatePost = () => {
             return;
         }
 
+        setIsSubmitting(true);
+
         let image = null;
         try {
             image = await uploadImage();
         } catch (err) {
             setUploadStatus('Failed to upload image.');
+            setIsSubmitting(false); 
             return;
         }
 
@@ -59,6 +63,7 @@ const CreatePost = () => {
             const token = localStorage.getItem('token');
             if (!token) {
                 setUploadStatus('No authentication token found.');
+                setIsSubmitting(false);
                 return;
             }
 
@@ -83,13 +88,18 @@ const CreatePost = () => {
                 setImaged(null);
                 setAuthor('');
                 setCaption('');
-                navigate('/profile');
+                setTimeout(() => {
+                    setIsSubmitting(false); 
+                    navigate('/profile');
+                }, 10000);
             } else {
                 setUploadStatus(`Failed to create post: ${response.data.message}`);
+                setIsSubmitting(false); 
             }
         } catch (err) {
             setUploadStatus(`Error creating post: ${err.message}`);
             console.error('Error creating post:', err);
+            setIsSubmitting(false); 
         }
     };
 
@@ -128,9 +138,10 @@ const CreatePost = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+                    className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ${isSubmitting ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={isSubmitting}
                 >
-                    Submit
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
                 </button>
                 {uploadStatus && <p className="mt-4 text-red-500">{uploadStatus}</p>}
             </form>
