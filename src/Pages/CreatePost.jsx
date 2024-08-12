@@ -90,7 +90,7 @@ const CreatePost = () => {
                 setCaption('');
                 setTimeout(() => {
                     setIsSubmitting(false); 
-                    navigate('/profile');
+                    navigate('/Home');
                 }, 10000);
             } else {
                 setUploadStatus(`Failed to create post: ${response.data.message}`);
