@@ -2,7 +2,7 @@ import instanceAxios from 'axios';
 
 
 export const axios = instanceAxios.create({
-    baseURL: 'https://social-media-backend-dusky.vercel.app/api',
+    baseURL: 'http://localhost:5000',
     headers: {
         'Content-Type': 'application/json',
     },
