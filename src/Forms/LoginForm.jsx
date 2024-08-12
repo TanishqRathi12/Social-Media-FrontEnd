@@ -7,11 +7,16 @@ const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
+
+        if (loading) return; 
+
+        setLoading(true);
         try {
             const response = await axios.post("/login", {
                 email,
@@ -26,11 +31,11 @@ const LoginForm = () => {
             navigate('/');
         } catch (err) {
             console.log(err.message);
-            setEmail('');
-            setPassword('');
             setErrorMessage('Invalid email or password. Please try again.');
+        } finally {
+            setLoading(false);
         }
-    }, [email, password, login, navigate]);
+    }, [email, password, login, navigate, loading]);
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -56,6 +61,7 @@ const LoginForm = () => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Enter your email"
                         required
+                        disabled={loading}
                     />
                 </div>
                 <div className="mb-6">
@@ -73,6 +79,7 @@ const LoginForm = () => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Enter your password"
                         required
+                        disabled={loading}
                     />
                 </div>
                 {errorMessage && (
@@ -84,8 +91,9 @@ const LoginForm = () => {
                     <button
                         type="submit"
                         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out"
+                        disabled={loading}
                     >
-                        Login
+                        {loading ? 'Logging in...' : 'Login'}
                     </button>
                 </div>
                 <div className="mt-4 text-center">

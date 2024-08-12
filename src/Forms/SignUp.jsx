@@ -7,12 +7,16 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
+
+        if (loading) return; 
+        setLoading(true);
         try {
             const response = await axios.post("/createUser", {
                 username,
@@ -34,8 +38,10 @@ const SignUp = () => {
             setUsername('');
             setEmail('');
             setPassword('');
+        } finally {
+            setLoading(false);
         }
-    }, [username, email, password, navigate]);
+    }, [username, email, password, navigate, loading]);
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -53,6 +59,7 @@ const SignUp = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        disabled={loading}
                     />
                 </div>
                 <div className="mb-4">
@@ -65,6 +72,7 @@ const SignUp = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        disabled={loading}
                     />
                 </div>
                 <div className="mb-6">
@@ -77,6 +85,7 @@ const SignUp = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        disabled={loading}
                     />
                 </div>
                 {errorMessage && (
@@ -88,8 +97,9 @@ const SignUp = () => {
                     <button
                         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out"
                         type="submit"
+                        disabled={loading}
                     >
-                        Sign Up
+                        {loading ? 'Signing up...' : 'Sign Up'}
                     </button>
                 </div>
                 <div className="mt-4 text-center">
