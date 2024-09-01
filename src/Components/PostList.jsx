@@ -47,7 +47,7 @@ const PostList = () => {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center space-y-8 w-full px-4">
+            <div className="flex flex-col items-center pt-20 justify-center space-y-8 w-full px-4">
                 <CreateButton />
                 {posts.map((post, index) => (
                     <div 
