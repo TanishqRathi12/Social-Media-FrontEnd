@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../Components/axios';
+import { useAuth } from '../Context/AuthContext';
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -8,6 +9,7 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const { signup } = useAuth();
     const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
@@ -29,7 +31,8 @@ const SignUp = () => {
             setEmail('');
             setPassword('');
             setErrorMessage(''); 
-            navigate('/login');
+            signup();
+            navigate('/');
         } catch (err) {
             console.log(err.message);
             setErrorMessage('Failed to create account. Please check your details and try again.');
