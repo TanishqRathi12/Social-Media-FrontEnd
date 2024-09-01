@@ -25,8 +25,6 @@ const SignUp = () => {
             });
             const { token } = response.data;
             localStorage.setItem('token', token);
-            console.log('Signup form submitted');
-            console.log(response.data);
             setUsername('');
             setEmail('');
             setPassword('');
