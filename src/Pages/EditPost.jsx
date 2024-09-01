@@ -36,11 +36,11 @@ const CreatePost = () => {
 
   const handleCaptionChange = (e) => {
     setCaption(e.target.value);
-    
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!imaged) {
       setUploadStatus("Please select an image to upload.");
       return;
@@ -83,7 +83,6 @@ const CreatePost = () => {
         setUploadStatus("Post created successfully!");
         console.log(response.data);
         setImaged(null);
-
         setCaption("");
         setTimeout(() => {
           setIsSubmitting(false);
@@ -102,7 +101,7 @@ const CreatePost = () => {
 
   return (
     <div className="container mx-auto text-center pt-32 sm:pt-28 max-w-lg">
-      <h1 className="text-2xl font-bold mb-6">Create Post</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Post</h1>
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 shadow-lg rounded-lg"

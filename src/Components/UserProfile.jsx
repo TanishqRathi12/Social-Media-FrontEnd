@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "../Components/axios";
 import { jwtDecode } from "jwt-decode";
 
+
 const UserProfile = () => {
   const [userData, setUserData] = useState({
     name: '',
@@ -17,7 +18,6 @@ const UserProfile = () => {
       const token = localStorage.getItem('token');
       const decoded = jwtDecode(token);
       const userId = decoded.id;
-      console.log(userId);
       try {
         const response = await axios.get(`/getUserById/${userId}`, {
           headers: {

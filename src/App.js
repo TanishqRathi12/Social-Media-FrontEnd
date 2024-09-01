@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar";
 import Profile from "./Pages/Profile";
 import Explore from "./Pages/Explore";
 import CreatePost from "./Pages/CreatePost";
+import EditPost from "./Pages/EditPost";
 import EditUser from "./Pages/EditUser";
 import SignUp from "./Forms/SignUp";
 import Login from "./Forms/LoginForm";
@@ -57,6 +58,18 @@ function App() {
           <Navbar />
           <Sidebar />
           <EditUser />
+        </>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/EditPost",
+      element: (
+        <ProtectedRoute>
+        <>
+          <Navbar />
+          <Sidebar />
+          <EditPost />
         </>
         </ProtectedRoute>
       ),
