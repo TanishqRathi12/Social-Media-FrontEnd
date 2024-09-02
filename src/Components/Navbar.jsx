@@ -37,7 +37,7 @@ const Navbar = () => {
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="flex flex-1 items-center justify-between">
                         <div className="flex justify-end">
-                            <h1 className="ml-4 text-2xl font-extrabold text-white">Social Media App</h1>
+                            <h1 className="ml-11 text-2xl font-extrabold text-white">Social Media App</h1>
                         </div>
                         <div className="flex items-center space-x-4">
                             <button 
