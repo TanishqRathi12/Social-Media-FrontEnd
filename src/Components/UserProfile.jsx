@@ -4,6 +4,7 @@ import axios from "../Components/axios";
 import { jwtDecode } from "jwt-decode";
 
 
+
 const UserProfile = () => {
   const [userData, setUserData] = useState({
     name: '',
@@ -40,6 +41,7 @@ const UserProfile = () => {
   }, []);
 
   return (
+    <>
     <div className="h-screen dark:bg-gray-800 bg-gray-200 pt-12">
       <h1 className="text-xl font-semibold text-center text-gray-800 pt-7 dark:text-white mb-8">
         Following and Followers feature coming soon globally!
@@ -88,6 +90,7 @@ const UserProfile = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
