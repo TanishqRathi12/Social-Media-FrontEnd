@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CommentList from "../Components/CommentList";
 import { LikeContext } from '../Context/context';
 import Like from './Like';
 import CreateButton from './CreateButton';
 import axios from '../Components/axios';
 
-const PostList = () => {
-    const [posts, setPosts] = useState([]);
+const PostList = ({posts}) => {
+    
     const [comments, setComments] = useState({});
 
+    const topPosts = [...posts].reverse();
+    
     const handleChange = (e, id) => {
         setComments({ ...comments, [id]: e.target.value });
     };
@@ -32,25 +34,12 @@ const PostList = () => {
         setComments({ ...comments, [id]: '' });
     };
 
-    useEffect(() => {
-        fetchData();
-        async function fetchData() {
-            try {
-                const response = await axios.get('/posts');
-                const data = response.data;
-                setPosts(data);
-            } catch (error) {
-                console.error("Error fetching posts:", error);
-            }
-        }
-    }, []);
-
     return (
         <>
             <div className="flex flex-col items-center pt-20 justify-center space-y-8 w-full px-4">
                 <CreateButton />
-                {posts.map((post, index) => (
-                    <div 
+                {topPosts.map((post, index) => (
+                    <div
                         key={index} 
                         className="bg-white rounded-lg shadow-lg w-full max-w-md p-4 flex flex-col items-start"
                     >
@@ -70,14 +59,14 @@ const PostList = () => {
                         </LikeContext.Provider>
                             <CommentList postId={post._id}  author={post.author.username} />
                         <div className="flex items-center mt-4 w-full">
-                            <input 
-                                type="text" 
-                                placeholder="Add a comment" 
-                                className="border border-gray-300 rounded-md p-2 flex-grow" 
-                                value={comments[post._id] || ''} 
-                                onChange={(e) => handleChange(e, post._id)} 
+                            <input
+                                type="text"
+                                placeholder="Add a comment"
+                                className="border border-gray-300 rounded-md p-2 flex-grow"
+                                value={comments[post._id] || ''}
+                                onChange={(e) => handleChange(e, post._id)}
                             />
-                            <button 
+                            <button
                                 className="ml-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition-all"
                                 onClick={() => handleClick(post._id)}
                             >

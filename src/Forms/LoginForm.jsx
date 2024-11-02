@@ -25,7 +25,6 @@ const LoginForm = () => {
             const { token } = response.data;
             localStorage.setItem('token', token);
             console.log('Login form submitted');
-            console.log(response);
             login();
             setEmail('');
             setPassword('');

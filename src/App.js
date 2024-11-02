@@ -12,7 +12,15 @@ import Login from "./Forms/LoginForm";
 import { AuthProvider } from "./Context/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useState } from "react";
+
+
+
+
+
 function App() {
+  const [handleData, setHandleData] = useState('');
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -21,7 +29,7 @@ function App() {
         <>
           <Navbar/>
           <Sidebar />
-          <Home/>
+          <Home sendData={setHandleData}/>
         </>
         </ProtectedRoute>
       ),
@@ -33,7 +41,7 @@ function App() {
         <>
           <Navbar />
           <Sidebar />
-          <Profile />
+          <Profile posts={handleData} />
         </>
         </ProtectedRoute>
       ),
@@ -108,6 +116,7 @@ function App() {
   return (
     <>
     <AuthProvider>
+      
       <RouterProvider router={router}/>
     </AuthProvider>
     </>

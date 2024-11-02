@@ -81,14 +81,12 @@ const CreatePost = () => {
 
       if (response.status === 201) {
         setUploadStatus("Post created successfully!");
-        console.log(response.data);
         setImaged(null);
-
         setCaption("");
         setTimeout(() => {
           setIsSubmitting(false);
           navigate("/");
-        }, 10000);
+        }, 1000);
       } else {
         setUploadStatus(`Failed to create post: ${response.data.message}`);
         setIsSubmitting(false);
