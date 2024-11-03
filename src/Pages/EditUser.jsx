@@ -82,7 +82,7 @@ const EditUser = () => {
             setTimeout(() => {
                 setIsSubmitting(false); 
                 navigate('/profile');
-            }, 10000);
+            }, 1000);
         } catch (err) {
             console.log(err.message);
             setError('Failed to update user. Please try again.');

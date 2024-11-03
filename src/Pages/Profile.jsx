@@ -29,12 +29,13 @@ function Profile({posts}){
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data);
         setUserData({
           name: response.data.username,
           image: response.data.ProfilePicture,
           Bio: response.data.Bio,
-          followerCount: response.data.followerCount,
-          followingCount: response.data.followingCount,
+          followerCount: response.data.followers,
+          followingCount: response.data.following,
         });
         
       } catch (error) {

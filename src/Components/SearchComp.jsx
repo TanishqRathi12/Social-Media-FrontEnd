@@ -1,32 +1,46 @@
-import React, { useState } from "react";
-import SearchList from "../Components/searchList";
+import React, { useState, useEffect } from "react";
+import SearchList from "./searchList";
+import axios from "./axios";
 import { searchContest } from "../Context/context";
+
+async function fetchAllUsers() {
+  try {
+    const response = await axios.get(`/users`);
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching all users:", error);
+    return [];
+  }
+}
 
 function SearchComp() {
   const [search, setSearch] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
-  };
+  useEffect(() => {
+    const getUsers = async () => {
+      const users = await fetchAllUsers();
+      setAllUsers(users);
+      setSearchResults(users);
+    };
+    getUsers();
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (search) {
-      setSearchResults((prevResults) => [
-        ...prevResults,
-        { id: prevResults.length + 1, name: search },
-      ]);
-      setSearch("");
-    }
+  const handleChange = (e) => {
+    const searchQuery = e.target.value;
+    setSearch(searchQuery);
+    const filteredResults = allUsers.filter(user =>
+      user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setSearchResults(filteredResults);
   };
 
   return (
     <searchContest.Provider value={searchResults}>
-       <h1 className="text-xl font-semibold text-gray-600 sm:pl-72 pt-16">This feature is currently in development and will be available globally soon</h1>
-      <div className="bg-gray-400 dark:bg-gray-700 h-screen w-screen flex flex-col pt-44 items-center">
+      <div className="bg-gray-400 dark:bg-gray-700 h-full w-full flex flex-col pt-44 items-center">
         <div>
-          <form onSubmit={handleSubmit} className="max-w-[880px] w-full px-4">
+          <form onSubmit={(e) => e.preventDefault()} className="max-w-[880px] w-full px-4">
             <div className="flex justify-center">
               <input
                 type="text"
@@ -34,13 +48,7 @@ function SearchComp() {
                 value={search}
                 onChange={handleChange}
                 className="sm:w-96 border h-12 shadow p-4 rounded-full dark:text-gray-800 dark:border-gray-700 dark:bg-gray-200"
-                placeholder="search"
-              />
-              <input
-                type="submit"
-                name="Search"
-                value="Search"
-                className="ml-4 pl-4 pr-4 h-10 mt-1 bg-white text-black rounded-lg"
+                placeholder="Search by username"
               />
             </div>
           </form>

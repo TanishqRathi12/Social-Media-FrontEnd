@@ -5,7 +5,6 @@ import EditButton from "./EditPost";
 
 const UserProfile = ({ userData, posts, user }) => {
   const filteredPosts = posts.filter((post) => post.author._id === user);
-
   return (
     <>
       <div className="h-full dark:bg-gray-800 bg-gray-200 pt-12 pb-8">
@@ -27,10 +26,10 @@ const UserProfile = ({ userData, posts, user }) => {
             </p>
             <div className="flex gap-4 mb-4">
               <button className="rounded-full bg-green-600 dark:bg-green-800 text-white font-bold hover:bg-green-700 dark:hover:bg-green-900 px-4 py-2">
-                Followers ({userData.followerCount})
+                Followers ({userData.followerCount.length})
               </button>
               <button className="rounded-full bg-purple-600 dark:bg-purple-800 text-white font-bold hover:bg-purple-700 dark:hover:bg-purple-900 px-4 py-2">
-                Following ({userData.followingCount})
+                Following ({userData.followingCount.length})
               </button>
             </div>
             <Link to="/EditUser">
