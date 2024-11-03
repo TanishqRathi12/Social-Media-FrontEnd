@@ -44,9 +44,10 @@ const LoginForm = () => {
   return (
     <>
       <h3 className="bg-red-100 border-l-4 border-red-500 text-red-700 ml-10 mr-10 pt-16 mb-0 pb-0 rounded-lg shadow-md">
-        🚨 Heads up! Please keep your comments and posts respectful—no abusive language
-        here! If you have a problem, sort it out by sending me a personal
-        message instead of hiding behind anonymity. Let's keep it real!
+      🌼 Hey there! Just a heads up: Please keep your comments and posts
+        respectful and positive—no abusive language here! If you have any
+        concerns or issues, feel free to reach out to me directly instead of
+        hiding behind anonymity. Let's keep it nice and constructive! 💖
       </h3>
       <div className="flex justify-center items-center h-screen bg-gray-100">
         <form
