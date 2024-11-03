@@ -44,6 +44,12 @@ const SignUp = () => {
     }, [username, email, password, navigate, loading, signup]);
 
     return (
+        <>
+        <h3 className="bg-red-100 border-l-4 border-red-500 text-red-700 ml-10 mr-10 pt-16 mb-0 pb-0 rounded-lg shadow-md">
+        🚨 Heads up! Please keep your comments and posts respectful—no abusive language
+        here! If you have a problem, sort it out by sending me a personal
+        message instead of hiding behind anonymity. Let's keep it real!
+      </h3>
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <form className="w-full max-w-sm bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
                 <h2 className="text-2xl font-extrabold mb-6 text-center text-gray-900">
@@ -115,6 +121,7 @@ const SignUp = () => {
                 </div>
             </form>
         </div>
+        </>
     );
 };
 
