@@ -8,10 +8,7 @@ const UserProfile = ({ userData, posts, user }) => {
   return (
     <>
       <div className="h-full dark:bg-gray-800 bg-gray-200 pt-12 pb-8">
-        <h1 className="text-xl font-semibold text-center text-gray-800 pt-7 dark:text-white mb-8">
-          Following and Followers feature coming soon globally!
-        </h1>
-        <div className="container mx-auto px-4 flex flex-col items-center">
+        <div className="container mx-auto px-4 flex flex-col items-center mt-16">
           <div className="flex flex-col items-center bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-md">
             <img
               className="h-40 w-40 rounded-full border-4 border-white dark:border-gray-800 mb-4"
