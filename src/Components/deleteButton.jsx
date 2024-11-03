@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "../Components/axios";
-import Modal from "./Model"; // import the Modal component
+import Modal from "./Model";
 import { useNavigate } from "react-router-dom";
 
 const DeleteButton = ({ id }) => {
@@ -29,7 +29,7 @@ const DeleteButton = ({ id }) => {
         } catch (error) {
             console.error('Error deleting the post:', error);
         } finally {
-            setIsModalOpen(false); // Close modal after action
+            setIsModalOpen(false); 
         }
     };
 

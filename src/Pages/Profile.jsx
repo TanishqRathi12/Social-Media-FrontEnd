@@ -29,7 +29,6 @@ function Profile({posts}){
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
         setUserData({
           name: response.data.username,
           image: response.data.ProfilePicture,

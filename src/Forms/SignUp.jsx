@@ -34,7 +34,6 @@ const SignUp = () => {
             signup();
             navigate('/');
         } catch (err) {
-            console.log(err.message);
             setErrorMessage('Failed to create account. Please check your details and try again.');
             setUsername('');
             setEmail('');
