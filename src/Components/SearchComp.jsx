@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import SearchList from "./searchList";
 import axios from "./axios";
-import { searchContest } from "../Context/context";
+import Loading from "./SearchHOC";
+import searchList from "./searchList";
 
 async function fetchAllUsers() {
   try {
@@ -14,15 +14,18 @@ async function fetchAllUsers() {
 }
 
 function SearchComp() {
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const SearchListWithLoading = Loading(searchList);
 
   useEffect(() => {
     const getUsers = async () => {
       const users = await fetchAllUsers();
       setAllUsers(users);
       setSearchResults(users);
+      setLoading(false);
     };
     getUsers();
   }, []);
@@ -37,7 +40,6 @@ function SearchComp() {
   };
 
   return (
-    <searchContest.Provider value={searchResults}>
       <div className="bg-gray-400 dark:bg-gray-700 h-full w-full flex flex-col pt-44 items-center">
         <div>
           <form onSubmit={(e) => e.preventDefault()} className="max-w-[880px] w-full px-4">
@@ -54,10 +56,9 @@ function SearchComp() {
           </form>
         </div>
         <div>
-          <SearchList />
+          <SearchListWithLoading data={searchResults} isLoading={loading} />
         </div>
       </div>
-    </searchContest.Provider>
   );
 }
 

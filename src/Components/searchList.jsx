@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from './axios';
-import { searchContest } from '../Context/context';
 import { jwtDecode } from 'jwt-decode';
 
-const SearchList = () => {
-    const data = useContext(searchContest);
+const SearchList = ({data}) => {
     const [searchResults, setSearchResults] = useState([]);
     const token2 = localStorage.getItem('token');
     const decoded = jwtDecode(token2);
