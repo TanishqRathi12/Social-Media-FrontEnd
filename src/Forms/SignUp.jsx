@@ -41,7 +41,7 @@ const SignUp = () => {
         } finally {
             setLoading(false);
         }
-    }, [username, email, password, navigate, loading]);
+    }, [username, email, password, navigate, loading, signup]);
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">

@@ -77,6 +77,9 @@ const SearchList = () => {
                             />
                             <h3 className="text-xl font-semibold text-white">{result.username}</h3>
                             <div className="text-gray-400 text-sm mt-2">
+                                <p>
+                                    <span className="font-semibold text-gray-300 truncate "></span> {result?.Bio || 'None'}
+                                </p>
                                 <p className="mb-1">
                                     <span className="font-semibold text-gray-300">Followers:</span> {result.followers.length || 'None'}
                                 </p>
