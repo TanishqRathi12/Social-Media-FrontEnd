@@ -77,7 +77,6 @@ function App() {
       path: "/SignUp",
       element: (
         <>
-          <CommonComp />
           <SignUp />
         </>
       ),
@@ -86,7 +85,6 @@ function App() {
       path: "/Login",
       element: (
         <>
-          <CommonComp />
           <Login />
         </>
       ),
