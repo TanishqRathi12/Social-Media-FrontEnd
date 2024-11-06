@@ -3,7 +3,6 @@ import React from "react";
 const withLoading = (Wrapper) => {
   return (props) => {
     const { isLoading, ...otherProps } = props;
-
     if (isLoading) {
       return (
         <div className="flex items-center justify-center min-h-screen pb-72">

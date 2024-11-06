@@ -4,14 +4,13 @@ import { jwtDecode } from 'jwt-decode';
 
 const SearchList = ({data}) => {
     const [searchResults, setSearchResults] = useState([]);
-    const token2 = localStorage.getItem('token');
-    const decoded = jwtDecode(token2);
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode(token);
     const userId = decoded.id;
     const search = [...data].reverse();
 
     useEffect(() => {
         const fetchFollowStates = async () => {
-            const token = localStorage.getItem('token');
             try {
                 const { data } = await axios.get('/getFollowStates', {
                     headers: { Authorization: `Bearer ${token}` }
@@ -30,7 +29,7 @@ const SearchList = ({data}) => {
         };
 
         fetchFollowStates();
-    }, [userId, search]);
+    }, [userId, token]);
 
     const handleFollowToggle = async (id, isFollowed) => {
         const token = localStorage.getItem('token');

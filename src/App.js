@@ -1,12 +1,11 @@
 import "./App.css";
-import {Sidebar} from "./Components/Sidebar";
 import Home from "./Pages/Home";
-import Navbar from "./Components/Navbar"; 
 import Profile from "./Pages/Profile";
 import Explore from "./Pages/Explore";
 import CreatePost from "./Pages/CreatePost";
 import EditPost from "./Pages/EditPost";
 import EditUser from "./Pages/EditUser";
+import CommonComp from "./Components/CommonComp";
 import SignUp from "./Forms/SignUp";
 import Login from "./Forms/LoginForm";
 import { AuthProvider } from "./Context/AuthContext";
@@ -14,23 +13,18 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState } from "react";
 
-
-
-
-
 function App() {
-  const [handleData, setHandleData] = useState('');
+  const [handleData, setHandleData] = useState("");
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <ProtectedRoute>
-        <>
-          <Navbar/>
-          <Sidebar />
-          <Home sendData={setHandleData}/>
-        </>
+          <>
+            <CommonComp />
+            <Home sendData={setHandleData} />
+          </>
         </ProtectedRoute>
       ),
     },
@@ -38,11 +32,8 @@ function App() {
       path: "/Profile",
       element: (
         <ProtectedRoute>
-        <>
-          <Navbar />
-          <Sidebar />
+          <CommonComp />
           <Profile posts={handleData} />
-        </>
         </ProtectedRoute>
       ),
     },
@@ -50,11 +41,8 @@ function App() {
       path: "/CreatePost",
       element: (
         <ProtectedRoute>
-        <>
-          <Navbar />
-          <Sidebar />
+          <CommonComp />
           <CreatePost />
-        </>
         </ProtectedRoute>
       ),
     },
@@ -62,11 +50,8 @@ function App() {
       path: "/EditUser",
       element: (
         <ProtectedRoute>
-        <>
-          <Navbar />
-          <Sidebar />
+          <CommonComp />
           <EditUser />
-        </>
         </ProtectedRoute>
       ),
     },
@@ -74,11 +59,8 @@ function App() {
       path: "/EditPost",
       element: (
         <ProtectedRoute>
-        <>
-          <Navbar />
-          <Sidebar />
+          <CommonComp />
           <EditPost />
-        </>
         </ProtectedRoute>
       ),
     },
@@ -86,11 +68,8 @@ function App() {
       path: "/Explore",
       element: (
         <ProtectedRoute>
-        <>
-          <Navbar />
-          <Sidebar />
+          <CommonComp />
           <Explore />
-        </>
         </ProtectedRoute>
       ),
     },
@@ -98,27 +77,26 @@ function App() {
       path: "/SignUp",
       element: (
         <>
-          <Navbar />
+          <CommonComp />
           <SignUp />
         </>
       ),
     },
     {
-      path:"/Login",
-      element:(
+      path: "/Login",
+      element: (
         <>
-          <Navbar/>
-          <Login/>
+          <CommonComp />
+          <Login />
         </>
-      )
-    }
+      ),
+    },
   ]);
   return (
     <>
-    <AuthProvider>
-      
-      <RouterProvider router={router}/>
-    </AuthProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   );
 }
