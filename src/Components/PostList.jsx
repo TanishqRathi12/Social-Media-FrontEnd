@@ -5,12 +5,10 @@ import Like from './Like';
 import CreateButton from './CreateButton';
 import axios from '../Components/axios';
 
-const PostList = ({posts}) => {
-    
+const PostList = ({posts,isLoading,hasMore}) => {
+    console.log("Fetched Post",posts)
     const [comments, setComments] = useState({});
 
-    const topPosts = [...posts].reverse();
-    
     const handleChange = (e, id) => {
         setComments({ ...comments, [id]: e.target.value });
     };
@@ -38,7 +36,7 @@ const PostList = ({posts}) => {
         <>
             <div className="flex flex-col items-center pt-20 justify-center space-y-8 w-full px-4">
                 <CreateButton />
-                {topPosts.map((post, index) => (
+                {posts.map((post, index) => (
                     <div
                         key={index} 
                         className="bg-white rounded-lg shadow-lg w-full max-w-md p-4 flex flex-col items-start"
@@ -75,6 +73,8 @@ const PostList = ({posts}) => {
                         </div>
                     </div>
                 ))}
+                {isLoading && <p>Loading more Posts...</p>}
+                {!hasMore && <p className='m-48 text-red-600 bold'>No More Posts left!! Thanks for Visiting😇❤️</p>}
             </div>
         </>
     );
