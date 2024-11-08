@@ -6,7 +6,7 @@ import CreateButton from './CreateButton';
 import axios from '../Components/axios';
 
 const PostList = ({posts,isLoading,hasMore}) => {
-    console.log("Fetched Post",posts)
+    console.log("Fetched Post")
     const [comments, setComments] = useState({});
 
     const handleChange = (e, id) => {
