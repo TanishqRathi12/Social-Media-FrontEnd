@@ -3,8 +3,7 @@ import CreateButton from "./CreateButton";
 import Delete from "./deleteButton";
 import EditButton from "./EditPost";
 
-const UserProfile = ({ userData, posts, user }) => {
-  const filteredPosts = posts.filter((post) => post.author._id === user);
+const UserProfile = ({ userData, posts}) => {
   return (
     <>
       <div className="h-full dark:bg-gray-800 bg-gray-200 pt-12 pb-8">
@@ -44,13 +43,13 @@ const UserProfile = ({ userData, posts, user }) => {
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">
             My Posts
           </h2>
-          {filteredPosts.length === 0 ? (
+          {posts.length === 0 ? (
             <p className="text-center text-gray-500 dark:text-gray-300">
               No posts yet.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredPosts.map((post, index) => (
+              {posts.map((post, index) => (
                 <div
                   key={index}
                   className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"

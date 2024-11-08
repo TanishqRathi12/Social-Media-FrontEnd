@@ -11,10 +11,8 @@ import Login from "./Forms/LoginForm";
 import { AuthProvider } from "./Context/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useState } from "react";
 
 function App() {
-  const [handleData, setHandleData] = useState("");
 
   const router = createBrowserRouter([
     {
@@ -23,7 +21,7 @@ function App() {
         <ProtectedRoute>
           <>
             <CommonComp />
-            <Home sendData={setHandleData} />
+            <Home />
           </>
         </ProtectedRoute>
       ),
@@ -33,7 +31,7 @@ function App() {
       element: (
         <ProtectedRoute>
           <CommonComp />
-          <Profile posts={handleData} />
+          <Profile />
         </ProtectedRoute>
       ),
     },

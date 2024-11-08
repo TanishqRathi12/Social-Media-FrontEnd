@@ -39,7 +39,6 @@ const EditPost = () => {
 
       const decoded = jwtDecode(token);
       const userId = decoded.id;
-      console.log(userId);
 
       const response = await axios.patch(
         `/updatePost/${id}`,
@@ -56,9 +55,9 @@ const EditPost = () => {
         setCaption("");
         setTimeout(() => {
           setIsSubmitting(false);
-          navigate("/");
+          navigate("/Profile");
           
-        }, 2000);
+        }, 1000);
       } else {
         setUploadStatus(`Failed to update caption: ${response.data.message}`);
         setIsSubmitting(false);

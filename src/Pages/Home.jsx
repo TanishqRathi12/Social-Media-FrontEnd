@@ -6,7 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 
 const PostListWithLoading = LoadingHoc(PostList);
 
-function Home({ sendData }) {
+function Home() {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -42,7 +42,6 @@ function Home({ sendData }) {
       const response = await axios.get(`/posts?page=${page}`);
       const data = response.data;
       setPost((prev) => [...prev, ...data]);
-      sendData(data);
       if (data.length < 5) {
         setHasMore(false);
       }
@@ -51,7 +50,7 @@ function Home({ sendData }) {
     } finally {
       setLoading(false);
     }
-  }, [sendData, page]);
+  }, [page]);
 
   useEffect(() => {
     fetchData();
