@@ -22,12 +22,12 @@ function Profile() {
   });
   const dataHasChanged = (result) => {
     const hasChanged = !_.isEqual(postsRef.current,result)
-    console.log("Data comparison for posts:", hasChanged,postsRef.current, result);
+   // console.log("Data comparison for posts:", hasChanged,postsRef.current, result);
     return hasChanged;
   };
   const ProfileHasChanged = (result) => {
     const hasChanged = !_.isEqual(Profile.current,result);
-    console.log("Data comparison for Profile:", hasChanged,Profile.current, result);
+   // console.log("Data comparison for Profile:", hasChanged,Profile.current, result);
     return hasChanged;
   }
   useEffect(() => {
@@ -42,7 +42,6 @@ function Profile() {
           },
         });
         if (!Profile.current || ProfileHasChanged(response.data)) {
-          console.log("Profile Data is Fetched")
           Profile.current = response.data;
           setUserData({
             name: response.data.username,
@@ -51,8 +50,6 @@ function Profile() {
             followerCount: response.data.followers,
             followingCount: response.data.following,
           });
-        } else {
-          console.log("Data is not fetched thanks UseRef")
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -76,12 +73,9 @@ function Profile() {
         });
         const result = response2.data;
         if (!postsRef.current || dataHasChanged(result)) {
-          console.log("posts are fetched or changed");
           postsRef.current = result;
           setPosts(result);
-        } else {
-          console.log("Not fetched again Thanks UseRef");
-        }
+        } 
       } catch (error) {
         console.error("Error Fetching the posts", error);
       } finally {

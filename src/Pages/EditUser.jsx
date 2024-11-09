@@ -72,9 +72,6 @@ const EditUser = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
-            console.log(response.data);
-            console.log('Edit form submitted');
             setUsername('');
             setImage(null);
             setBio('');

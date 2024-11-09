@@ -56,6 +56,7 @@ const SearchList = ({data}) => {
     return (
         <div className="sm:ml-72 text-white">
             <h2 className="text-3xl font-bold mb-8 text-center m-12">Search Results</h2>
+            {/* {UserLoad && <p className="text-white bold text-3xl text-center mb-8">Loading Users....</p>} */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4 mb-32">
                 {searchResults.length === 0 ? (
                     <p className="text-center text-gray-300 text-2xl font-extrabold mt-20 mb-20">

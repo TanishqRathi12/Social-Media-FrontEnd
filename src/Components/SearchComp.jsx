@@ -3,6 +3,8 @@ import axios from "./axios";
 import Loading from "./SearchHOC";
 import searchList from "./searchList";
 
+
+
 async function fetchAllUsers() {
   try {
     const response = await axios.get(`/users`);
@@ -56,7 +58,7 @@ function SearchComp() {
           </form>
         </div>
         <div>
-          <SearchListWithLoading data={searchResults} isLoading={loading} />
+          <SearchListWithLoading data={searchResults} isLoading={loading}  />
         </div>
       </div>
   );
