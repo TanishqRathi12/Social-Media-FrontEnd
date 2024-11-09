@@ -17,7 +17,7 @@ function Profile() {
     followingCount: 0,
   });
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserDataAndPost = async () => {
       const token = localStorage.getItem("token");
       const decoded = jwtDecode(token);
       const userId = decoded.id;
@@ -27,6 +27,16 @@ function Profile() {
             Authorization: `Bearer ${token}`,
           },
         });
+        try {
+          const response2 = await axios.get(`/getPostById/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setPosts(response2.data);
+        } catch (error) {
+          console.error("Error fetching user Post:",error);
+        }
         setUserData({
           name: response.data.username,
           image: response.data.ProfilePicture,
@@ -41,24 +51,19 @@ function Profile() {
       }
     };
 
-    const fetchPostById = async () => {
-      const token = localStorage.getItem("token");
-      const decoded = jwtDecode(token);
-      const userId = decoded.id;
-      try {
-        const response = await axios.get(`/getPostById/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setPosts(response.data);
-        //console.log(response.data)
-      } catch (error) {
-        console.error("Error Fetching the posts", error);
-      }
-    };
-    fetchPostById();
-    fetchUserData();
+    // const fetchPostById = async () => {
+    //   const token = localStorage.getItem("token");
+    //   const decoded = jwtDecode(token);
+    //   const userId = decoded.id;
+    //   try {
+
+    //     //console.log(response.data)
+    //   } catch (error) {
+    //     console.error("Error Fetching the posts", error);
+    //   }
+    // };
+    // fetchPostById();
+    fetchUserDataAndPost();
   }, []);
 
   return (

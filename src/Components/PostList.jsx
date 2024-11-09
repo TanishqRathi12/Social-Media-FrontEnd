@@ -5,8 +5,9 @@ import Like from './Like';
 import CreateButton from './CreateButton';
 import axios from '../Components/axios';
 
-const PostList = ({posts,isLoading,hasMore}) => {
-    console.log("Fetched Post")
+const PostList = ({posts,postLoad,hasMore}) => {
+   // console.log("Fetched Post")
+   // console.log("Loading:",postLoad)
     const [comments, setComments] = useState({});
 
     const handleChange = (e, id) => {
@@ -73,8 +74,8 @@ const PostList = ({posts,isLoading,hasMore}) => {
                         </div>
                     </div>
                 ))}
-                {isLoading && <p>Loading more Posts...</p>}
-                {!hasMore && <p className='m-48 text-red-600 bold'>No More Posts left!! Thanks for Visiting😇❤️</p>}
+                {postLoad && <p className='text-green-700 bold text-2xl pb-10 sm:pb-20'>Loading more Posts...</p>}
+                {!hasMore && <p className=' text-red-600 bold text-2xl pb-10'>No More Posts left!! Thanks for Visiting😇❤️</p>}
             </div>
         </>
     );

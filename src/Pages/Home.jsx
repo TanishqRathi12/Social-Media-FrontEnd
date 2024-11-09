@@ -9,6 +9,7 @@ const PostListWithLoading = LoadingHoc(PostList);
 function Home() {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [postLoading , setPostLoading] = useState(null)
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const timeOut = useRef(null);
@@ -39,6 +40,7 @@ function Home() {
 
   const fetchData = useCallback(async () => {
     try {
+      setPostLoading(true);
       const response = await axios.get(`/posts?page=${page}`);
       const data = response.data;
       setPost((prev) => [...prev, ...data]);
@@ -48,7 +50,8 @@ function Home() {
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
-      setLoading(false);
+      setLoading(false)
+      setPostLoading(false)
     }
   }, [page]);
 
@@ -58,7 +61,7 @@ function Home() {
 
   return (
     <>
-      <PostListWithLoading isLoading={loading} posts={post} hasMore={hasMore}/>
+      <PostListWithLoading isLoading={loading} posts={post} hasMore={hasMore} postLoad={postLoading}/>
     </>
   );
 }
