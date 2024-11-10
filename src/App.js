@@ -13,85 +13,55 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 function App() {
-
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <ProtectedRoute>
-          <>
-            <CommonComp />
-            <Home />
-          </>
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/Profile",
-      element: (
-        <ProtectedRoute>
           <CommonComp />
-          <Profile />
         </ProtectedRoute>
       ),
+      children: [
+        {
+          path: "",
+          element: <Home />,
+        },
+        {
+          path: "/Profile",
+          element: <Profile />,
+        },
+        {
+          path: "/CreatePost",
+          element: <CreatePost />,
+        },
+        {
+          path: "/EditUser",
+          element: <EditUser />,
+        },
+        {
+          path: "/EditPost",
+          element: <EditPost />,
+        },
+        {
+          path: "/Explore",
+          element: <Explore />,
+        },
+      ],
     },
-    {
-      path: "/CreatePost",
-      element: (
-        <ProtectedRoute>
-          <CommonComp />
-          <CreatePost />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/EditUser",
-      element: (
-        <ProtectedRoute>
-          <CommonComp />
-          <EditUser />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/EditPost",
-      element: (
-        <ProtectedRoute>
-          <CommonComp />
-          <EditPost />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/Explore",
-      element: (
-        <ProtectedRoute>
-          <CommonComp />
-          <Explore />
-        </ProtectedRoute>
-      ),
-    },
+
     {
       path: "/SignUp",
-      element: (
-        <>
-          <SignUp />
-        </>
-      ),
+      element: <SignUp />,
     },
     {
       path: "/Login",
-      element: (
-        <>
-          <Login />
-        </>
-      ),
+      element: <Login />,
     },
   ]);
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
       </AuthProvider>
     </>
   );
