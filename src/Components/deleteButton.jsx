@@ -21,7 +21,7 @@ const DeleteButton = ({ id }) => {
             });
 
             if (response.status === 200) {
-                console.log('Post deleted successfully');
+                //console.log('Post deleted successfully');
                 navigate('/');
             } else {
                 console.error('Failed to delete the post:', response.data.message);
@@ -46,6 +46,8 @@ const DeleteButton = ({ id }) => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={handleDelete}
+                message2={"Are you sure you want to delete this post? This action cannot be undone."}
+                message1={"Confirm Deletion"}
             />
         </>
     );

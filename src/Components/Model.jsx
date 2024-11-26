@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ReactDom from "react-dom"
 
-const Modal = ({ isOpen, onClose, onConfirm }) => {
+const Modal = ({ isOpen, onClose, onConfirm, message1,message2 }) => {
+    useEffect(()=>{
+        // console.log("working")
+        if(isOpen){
+            document.body.style.overflow = "hidden";
+        }
+        else{
+            document.body.style.overflow = "auto";
+        }
+        return ()=>{
+            document.body.style.overflow = "auto";
+        };
+    })
     if (!isOpen) return null;
 
-    return (
+    return ReactDom.createPortal (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 transition-opacity duration-300 ease-in-out">
             <div className="bg-white rounded-lg p-6 shadow-lg w-96 transform transition-all duration-300 ease-in-out scale-100">
-                <h2 className="text-xl font-semibold mb-4 text-gray-800">Confirm Deletion</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">{message1}</h2>
                 <p className="mb-6 text-gray-600">
-                    Are you sure you want to delete this post? This action cannot be undone.
+                    {message2}
                 </p>
                 <div className="flex justify-end">
                     <button
@@ -25,7 +38,8 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.getElementById("modal-root")
     );
 };
 

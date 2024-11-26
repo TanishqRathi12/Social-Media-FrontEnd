@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Model";
 
 export const Sidebar = () => {
+  const [isModalOpen,setIsModalOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const { setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -51,11 +53,18 @@ export const Sidebar = () => {
             ))}
             <li className="text-lg font-semibold">
               <button
-                onClick={handleLogout}
+                onClick={()=>setIsModalOpen(true)}
                 className="block w-full p-4 rounded-md bg-red-600 text-white hover:bg-red-700 border border-red-700 text-left transition-all duration-200"
               >
                 Logout
               </button>
+              <Modal
+              isOpen={isModalOpen}
+              onClose={()=>setIsModalOpen(false)}
+              onConfirm={handleLogout}
+              message1={"Confirm Logout"}
+              message2={"Are you sure you want to Logout?"}
+              />
             </li>
           </ul>
         </nav>
@@ -81,11 +90,18 @@ export const Sidebar = () => {
             ))}
             <li className="text-lg font-semibold">
               <button
-                onClick={handleLogout}
+                onClick={()=>setIsModalOpen(true)}
                 className="block w-full p-4 rounded-md bg-red-700 text-white hover:bg-red-700 border border-red-800 text-left transition-all duration-200"
               >
                 Logout
               </button>
+              <Modal
+              isOpen={isModalOpen}
+              onClose={()=>setIsModalOpen(false)}
+              onConfirm={handleLogout}
+              message1={"Confirm Logout"}
+              message2={"Are you sure you want to Logout?"}
+              />
             </li>
           </ul>
         </nav>

@@ -8,6 +8,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState(""); 
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const LoginForm = () => {
       if (loading) return;
 
       setLoading(true);
+      setLoadingMessage("Request taking longer due to backend being inactive on free hosting. First time may take 30-40 seconds");
       try {
         const response = await axios.post("/login", {
           email,
@@ -25,15 +27,16 @@ const LoginForm = () => {
         });
         const { token } = response.data;
         localStorage.setItem("token", token);
-        console.log("Login form submitted");
         login();
         setEmail("");
         setPassword("");
         setErrorMessage("");
+        setLoadingMessage("");
         navigate("/");
       } catch (err) {
         console.log(err.message);
-        setErrorMessage("Invalid email or password. Please try again.");
+        setErrorMessage("Invalid email or password. Please try again." || err.message);
+        setLoadingMessage("");
       } finally {
         setLoading(false);
       }
@@ -42,25 +45,30 @@ const LoginForm = () => {
   );
 
   return (
-    <>
-      <h3 className="bg-red-100 border-l-4 border-red-500 text-red-700 ml-10 mr-10 mb-0 pb-0 rounded-lg shadow-md">
-      🌼 Hey there! Just a heads up: Please keep your comments and posts
-        respectful and positive—no abusive language here! If you have any
-        concerns or issues, feel free to reach out to me directly instead of
-        hiding behind anonymity. Let's keep it nice and constructive! 💖
-      </h3>
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <form
-          className="w-full max-w-sm bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
-          <h2 className="text-2xl font-extrabold mb-6 text-center text-gray-900">
-            Login
-          </h2>
-          <div className="mb-4">
+    <div className="bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 min-h-screen flex items-center justify-center relative">
+      <div className="absolute top-10 text-center animate-bounce z-10 px-4 md:px-0">
+        <h1 className="text-white text-3xl md:text-5xl font-extrabold tracking-wider drop-shadow-lg">
+          Welcome to <span className="text-yellow-400">KnackX</span>
+        </h1>
+        <p className="text-white text-sm md:text-lg mt-2">
+          Unlock your potential with us 🚀
+        </p>
+      </div>
+      <div className="relative bg-white rounded-xl shadow-2xl p-6 w-11/12 max-w-md z-20 mt-20 md:mt-0">
+        <h2 className="text-2xl md:text-4xl font-extrabold text-gray-800 text-center mb-6">
+          Log in to <span className="text-indigo-600">KnackX</span>
+        </h2>
+        {loadingMessage && (
+          <div className="mb-4 text-yellow-500 text-center font-semibold">
+            {loadingMessage}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-6">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="email"
+              className="block text-gray-700 font-bold mb-2"
             >
               Email
             </label>
@@ -69,7 +77,7 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow-md border rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-4 focus:ring-indigo-500"
               placeholder="Enter your email"
               required
               disabled={loading}
@@ -77,8 +85,8 @@ const LoginForm = () => {
           </div>
           <div className="mb-6">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="password"
+              className="block text-gray-700 font-bold mb-2"
             >
               Password
             </label>
@@ -87,38 +95,43 @@ const LoginForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow-md border rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:ring-4 focus:ring-indigo-500"
               placeholder="Enter your password"
               required
               disabled={loading}
             />
           </div>
           {errorMessage && (
-            <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
+            <div className="mb-4 text-red-500 text-sm text-center">
+              {errorMessage}
+            </div>
           )}
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out"
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-          </div>
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                className="text-blue-500 hover:text-blue-800 font-bold"
-              >
-                Sign Up
-              </Link>
-            </p>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-bold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="text-indigo-600 font-bold hover:underline"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </div>
-    </>
+      <div className="absolute bottom-10 text-center text-white animate-pulse z-10 px-4 md:px-0">
+        <p>
+          Experience the best with <span className="font-bold">KnackX</span>!
+        </p>
+      </div>
+    </div>
   );
 };
 
