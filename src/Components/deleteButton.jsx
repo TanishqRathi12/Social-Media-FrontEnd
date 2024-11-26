@@ -48,6 +48,7 @@ const DeleteButton = ({ id }) => {
                 onConfirm={handleDelete}
                 message2={"Are you sure you want to delete this post? This action cannot be undone."}
                 message1={"Confirm Deletion"}
+                button={"Delete"}
             />
         </>
     );

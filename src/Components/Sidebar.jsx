@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from "../Context/AuthContext";
@@ -14,6 +14,18 @@ export const Sidebar = () => {
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
   };
+
+  useEffect(()=>{
+    if(isOpen){
+      document.body.style.overflow="hidden";
+    }
+    else{
+      document.body.style.overflow="auto";
+    }
+    return ()=>{
+      document.body.style.overflow="auto";
+    }
+  })
 
   const handleLogout = () => {
     setIsAuthenticated(false);
@@ -64,6 +76,7 @@ export const Sidebar = () => {
               onConfirm={handleLogout}
               message1={"Confirm Logout"}
               message2={"Are you sure you want to Logout?"}
+              button={"Logout Anyway"}
               />
             </li>
           </ul>
@@ -101,6 +114,7 @@ export const Sidebar = () => {
               onConfirm={handleLogout}
               message1={"Confirm Logout"}
               message2={"Are you sure you want to Logout?"}
+              button={"Logout Anyway"}
               />
             </li>
           </ul>

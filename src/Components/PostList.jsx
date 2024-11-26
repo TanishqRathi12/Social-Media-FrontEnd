@@ -5,10 +5,9 @@ import Like from "./Like";
 import CreateButton from "./CreateButton";
 import axios from "../Components/axios";
 import { jwtDecode } from "jwt-decode";
+import { motion } from "framer-motion";
 
 const PostList = ({ posts, postLoad, hasMore }) => {
-  // console.log("Fetched Post")
-  // console.log("Loading:",postLoad)
   const [comments, setComments] = useState({});
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
@@ -47,9 +46,11 @@ const PostList = ({ posts, postLoad, hasMore }) => {
         {posts.map((post, index) => {
           const liked = userId ? post.likes.includes(userId) : false;
           return (
-            <div
+            <motion.div
               key={index}
               className="bg-white rounded-lg shadow-lg w-full max-w-md p-4 flex flex-col items-start"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
               <div className="relative w-full">
                 <img
@@ -70,33 +71,50 @@ const PostList = ({ posts, postLoad, hasMore }) => {
                 <Like postId={post._id} likeToggle={liked} />
               </LikeContext.Provider>
               <CommentList postId={post._id} author={post.author.username} />
-              <div className="flex items-center mt-4 w-full">
+              <motion.div
+                className="flex items-center mt-4 w-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
                 <input
                   type="text"
                   placeholder="Add a comment"
-                  className="border border-gray-300 rounded-md p-2 flex-grow"
+                  className="border border-gray-300 rounded-md p-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                   value={comments[post._id] || ""}
                   onChange={(e) => handleChange(e, post._id)}
                 />
-                <button
+                <motion.button
                   className="ml-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition-all"
                   onClick={() => handleClick(post._id)}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
                 >
                   Post
-                </button>
-              </div>
-            </div>
+                </motion.button>
+              </motion.div>
+            </motion.div>
           );
         })}
         {postLoad && (
-          <p className="text-green-700 bold text-2xl pb-10 sm:pb-20">
+          <motion.p
+            className="text-green-700 font-bold text-2xl pb-10 sm:pb-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             Loading more Posts...
-          </p>
+          </motion.p>
         )}
         {!hasMore && (
-          <p className=" text-red-600 bold text-2xl pb-10">
+          <motion.p
+            className="text-red-600 font-bold text-2xl pb-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             No More Posts left!! Thanks for Visiting😇❤️
-          </p>
+          </motion.p>
         )}
       </div>
     </>
