@@ -19,7 +19,7 @@ const LoginForm = () => {
       if (loading) return;
 
       setLoading(true);
-      setLoadingMessage("Request taking longer due to backend being inactive on free hosting. First time may take 30-40 seconds");
+      setLoadingMessage("Request taking longer due free Hosting");
       try {
         const response = await axios.post("/login", {
           email,

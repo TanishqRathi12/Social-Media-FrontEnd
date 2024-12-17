@@ -56,7 +56,7 @@ const SignUp = () => {
       </div>
       {loading && (
         <div className="mb-4 text-yellow-300 text-center text-sm">
-          Request taking longer due to backend being inactive on free hosting. First time may take 30-40 seconds.
+          Request taking longer due free Hosting
         </div>
       )}
 
