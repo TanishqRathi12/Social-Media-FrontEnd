@@ -14,29 +14,29 @@ function Home() {
   const [hasMore, setHasMore] = useState(true);
   const timeOut = useRef(null);
 
-  const handleScroll = useCallback(() => {
-    if(timeOut.current){
-      clearTimeout(timeOut.current);
-    };
+  // const handleScroll = useCallback(() => {
+  //   if(timeOut.current){
+  //     clearTimeout(timeOut.current);
+  //   };
 
-    timeOut.current = setTimeout(()=>{
-    const buffer = 1500;
-      if (
-        window.innerHeight + document.documentElement.scrollTop + buffer >=
-          document.documentElement.scrollHeight &&
-        !loading &&
-        hasMore
-      ) {
-        setPage((pre) => pre + 1);
-      }
+  //   timeOut.current = setTimeout(()=>{
+  //   const buffer = 1500;
+  //     if (
+  //       window.innerHeight + document.documentElement.scrollTop + buffer >=
+  //         document.documentElement.scrollHeight &&
+  //       !loading &&
+  //       hasMore
+  //     ) {
+  //       setPage((pre) => pre + 1);
+  //     }
       
-    },300)
-    },[loading,hasMore]);
+  //   },300)
+  //   },[loading,hasMore]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [handleScroll]);
 
   const fetchData = useCallback(async () => {
     try {
