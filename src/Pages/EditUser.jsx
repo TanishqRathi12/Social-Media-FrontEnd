@@ -67,7 +67,7 @@ const EditUser = () => {
             const decoded = jwtDecode(token);
             const userId = decoded.id;
 
-            const response = await axiosPlus.put(`/updateUser/${userId}`, formData, {
+            await axiosPlus.put(`/updateUser/${userId}`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

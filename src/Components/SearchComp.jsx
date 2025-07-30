@@ -42,7 +42,7 @@ function SearchComp() {
   };
 
   return (
-      <div className="bg-gray-400 dark:bg-gray-700 h-full w-full flex flex-col pt-44 items-center">
+      <div className="bg-slate-800 h-full w-full flex flex-col pt-20 items-center">
         <div>
           <form onSubmit={(e) => e.preventDefault()} className="max-w-[880px] w-full px-4">
             <div className="flex justify-center">

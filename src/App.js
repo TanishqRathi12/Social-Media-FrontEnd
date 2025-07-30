@@ -9,19 +9,11 @@ import CommonComp from "./Components/CommonComp";
 import SignUp from "./Forms/SignUp";
 import Login from "./Forms/LoginForm";
 import {AuthProvider} from "./Context/AuthContext"
-//import {useAuth} from "./Context/AuthContext"
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-//import { useEffect } from "react";ZZZZZZZZZZZZZZZZZZZz
 
 function App() {
-  // const {login} = useAuth();
-  // useEffect(()=>{
-  //   const token = localStorage.getItem("token");
-  //   if(token){
-  //     login();
-  //   }
-  // },[login])
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -32,7 +24,7 @@ function App() {
       ),
       children: [
         {
-          path: "",
+          path: "/",
           element: <Home />,
         },
         {
