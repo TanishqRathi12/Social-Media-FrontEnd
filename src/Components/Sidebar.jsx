@@ -12,12 +12,12 @@ export const Sidebar = ({ isOpen, onClose }) => {
   const sidebarRef = useRef(null);
   const location = useLocation();
 
-  // Close sidebar on route changes (mobile)
+
   useEffect(() => {
     onClose();
   }, [location.pathname]);
 
-  // Close sidebar if click outside (mobile)
+  
   useEffect(() => {
     if (!isOpen) return;
     function handleClick(e) {

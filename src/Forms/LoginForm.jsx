@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../Components/axios";
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield, Zap } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield, Zap } from "lucide-react";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -10,9 +10,43 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState(""); 
+  const [loadingMessage, setLoadingMessage] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const handleGuestLogin = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    setErrorMessage("");
+    setLoadingMessage("Logging in as guest...");
+
+    try {
+      const response = await axios.post("/login", {
+        email: "guest123@gmail.com",
+        password: "Guest@12",
+      });
+
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+      login();
+      setEmail("");
+      setPassword("");
+      setErrorMessage("");
+      setLoadingMessage("Guest login successful! Redirecting...");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (err) {
+      console.error("Guest login error:", err);
+      setErrorMessage(
+        err.response?.data?.error || "Guest login failed. Please try again."
+      );
+      setLoadingMessage("");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -23,7 +57,7 @@ const LoginForm = () => {
       setLoading(true);
       setErrorMessage("");
       setLoadingMessage("Request taking longer due to free hosting...");
-      
+
       try {
         const response = await axios.post("/login", {
           email,
@@ -41,7 +75,10 @@ const LoginForm = () => {
         }, 1000);
       } catch (err) {
         console.log(err.message);
-        setErrorMessage(err.response?.data?.message || "Invalid email or password. Please try again.");
+        setErrorMessage(
+          err.response?.data?.message ||
+            "Invalid email or password. Please try again."
+        );
         setLoadingMessage("");
       } finally {
         setLoading(false);
@@ -58,7 +95,7 @@ const LoginForm = () => {
           <div className="absolute bottom-40 right-20 w-24 h-24 bg-blue-300 rounded-full blur-2xl"></div>
           <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-blue-300 rounded-full blur-xl"></div>
         </div>
-        
+
         <div className="relative z-10 text-center max-w-md">
           <div className="mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl mb-6">
@@ -71,7 +108,7 @@ const LoginForm = () => {
               Unlock your potential with our comprehensive learning platform
             </p>
           </div>
-          
+
           <div className="space-y-4 text-left">
             <div className="flex items-center space-x-3 text-gray-200">
               <Shield className="w-5 h-5 text-blue-400" />
@@ -116,22 +153,28 @@ const LoginForm = () => {
             </div>
 
             {loadingMessage && (
-              <div className={`mb-6 p-4 rounded-lg border ${
-                loadingMessage.includes('successful') 
-                  ? 'bg-green-50 border-green-200' 
-                  : 'bg-blue-50 border-blue-200'
-              }`}>
+              <div
+                className={`mb-6 p-4 rounded-lg border ${
+                  loadingMessage.includes("successful")
+                    ? "bg-green-50 border-green-200"
+                    : "bg-blue-50 border-blue-200"
+                }`}
+              >
                 <div className="flex items-center space-x-2">
-                  <div className={`w-4 h-4 border-2 border-t-transparent rounded-full animate-spin ${
-                    loadingMessage.includes('successful')
-                      ? 'border-green-600'
-                      : 'border-blue-600'
-                  }`}></div>
-                  <span className={`font-medium ${
-                    loadingMessage.includes('successful')
-                      ? 'text-green-700'
-                      : 'text-blue-700'
-                  }`}>
+                  <div
+                    className={`w-4 h-4 border-2 border-t-transparent rounded-full animate-spin ${
+                      loadingMessage.includes("successful")
+                        ? "border-green-600"
+                        : "border-blue-600"
+                    }`}
+                  ></div>
+                  <span
+                    className={`font-medium ${
+                      loadingMessage.includes("successful")
+                        ? "text-green-700"
+                        : "text-blue-700"
+                    }`}
+                  >
                     {loadingMessage}
                   </span>
                 </div>
@@ -146,7 +189,10 @@ const LoginForm = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -165,7 +211,10 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -186,7 +235,11 @@ const LoginForm = () => {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     disabled={loading}
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -197,9 +250,14 @@ const LoginForm = () => {
                     type="checkbox"
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                  <span className="ml-2 text-sm text-gray-600">
+                    Remember me
+                  </span>
                 </label>
-                <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500 font-medium">
+                <Link
+                  to="/login"
+                  className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -221,12 +279,30 @@ const LoginForm = () => {
                   </>
                 )}
               </button>
+              <button
+                type="button"
+                onClick={handleGuestLogin}
+                className="w-full mt-2 bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                disabled={loading}
+              >
+                {loadingMessage.includes("guest") ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Logging in...</span>
+                  </>
+                ) : (
+                  <span>Login as Guest</span>
+                )}
+              </button>
             </form>
 
             <div className="mt-8 pt-6 border-t border-gray-200">
               <p className="text-center text-gray-600">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-blue-600 hover:text-blue-500 font-semibold">
+                Don't have an account?{" "}
+                <Link
+                  to="/signUp"
+                  className="text-blue-600 hover:text-blue-500 font-semibold"
+                >
                   Create account
                 </Link>
               </p>
@@ -234,10 +310,14 @@ const LoginForm = () => {
 
             <div className="mt-6 text-center">
               <p className="text-xs text-gray-500">
-                By signing in, you agree to our{' '}
-                <Link to="/terms" className="text-blue-600 hover:underline">Terms of Service</Link>
-                {' '}and{' '}
-                <Link to="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link>
+                By signing in, you agree to our{" "}
+                <Link to="/login" className="text-blue-600 hover:underline">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link to="/login" className="text-blue-600 hover:underline">
+                  Privacy Policy
+                </Link>
               </p>
             </div>
           </div>
@@ -245,6 +325,6 @@ const LoginForm = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LoginForm;

@@ -16,7 +16,7 @@ const PostList = ({ posts, postLoad, hasMore }) => {
   }
 
   return (
-    <div className="flex flex-col items-center pt-16 w-full px-2 sm:px-4 md:px-8 bg-slate-900 min-h-screen">
+    <div className="flex flex-col items-center pt-16 w-full px-2 sm:px-4 md:px-8 min-h-screen">
       <CreateButton />
       <div className="w-full flex flex-col items-center space-y-8 pt-2 max-w-2xl">
         {posts.map((post) => (

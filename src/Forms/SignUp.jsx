@@ -2,7 +2,17 @@ import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../Components/axios";
 import { useAuth } from "../Context/AuthContext";
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Shield, Zap, CheckCircle } from 'lucide-react';
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  Shield,
+  Zap,
+  CheckCircle,
+} from "lucide-react";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +33,7 @@ const SignUp = () => {
       e.preventDefault();
 
       if (loading) return;
-      
+
       if (!acceptTerms) {
         setErrorMessage("Please accept the terms and conditions to continue.");
         return;
@@ -32,30 +42,37 @@ const SignUp = () => {
       setLoading(true);
       setErrorMessage("");
       setLoadingMessage("Creating your account...");
-      
+
       try {
         const response = await axios.post("/createUser", {
           username,
           email,
           password,
         });
+
         const { token } = response.data;
         localStorage.setItem("token", token);
+
+        // Clear form inputs
         setUsername("");
         setEmail("");
         setPassword("");
+
         setErrorMessage("");
         setLoadingMessage("Account created successfully! Redirecting...");
+
         signup();
+
         setTimeout(() => {
           navigate("/");
         }, 1000);
       } catch (err) {
-        console.log(err.message);
-        setErrorMessage(
-          err.response?.data?.message || 
-          "Failed to create account. Please check your details and try again."
-        );
+        console.error("Signup error:", err);
+
+        const backendError =
+          err.response?.data?.error || "An unexpected error occurred.";
+
+        setErrorMessage(backendError);
         setLoadingMessage("");
       } finally {
         setLoading(false);
@@ -66,7 +83,7 @@ const SignUp = () => {
 
   const getPasswordStrength = (password) => {
     if (!password) return { strength: 0, text: "", color: "" };
-    
+
     let strength = 0;
     if (password.length >= 8) strength++;
     if (/[A-Z]/.test(password)) strength++;
@@ -79,7 +96,7 @@ const SignUp = () => {
       { text: "Weak", color: "bg-orange-500" },
       { text: "Fair", color: "bg-yellow-500" },
       { text: "Good", color: "bg-blue-500" },
-      { text: "Strong", color: "bg-green-500" }
+      { text: "Strong", color: "bg-green-500" },
     ];
 
     return { strength, ...levels[strength] };
@@ -95,7 +112,7 @@ const SignUp = () => {
           <div className="absolute bottom-40 right-20 w-24 h-24 bg-blue-300 rounded-full blur-2xl"></div>
           <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-blue-300 rounded-full blur-xl"></div>
         </div>
-        
+
         <div className="relative z-10 text-center max-w-md">
           <div className="mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl mb-6">
@@ -105,10 +122,11 @@ const SignUp = () => {
               Join Knack<span className="text-blue-400">X</span>
             </h1>
             <p className="text-gray-200 text-lg leading-relaxed">
-              Start your learning journey with thousands of courses and expert instructors
+              Start your learning journey with thousands of courses and expert
+              instructors
             </p>
           </div>
-          
+
           <div className="space-y-4 text-left">
             <div className="flex items-center space-x-3 text-gray-200">
               <CheckCircle className="w-5 h-5 text-blue-400" />
@@ -134,9 +152,7 @@ const SignUp = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Join Knack<span className="text-blue-600">X</span>
             </h1>
-            <p className="text-gray-600">
-              Start your learning journey today
-            </p>
+            <p className="text-gray-600">Start your learning journey today</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
@@ -150,22 +166,28 @@ const SignUp = () => {
             </div>
 
             {loadingMessage && (
-              <div className={`mb-6 p-4 rounded-lg border ${
-                loadingMessage.includes('successfully') 
-                  ? 'bg-green-50 border-green-200' 
-                  : 'bg-blue-50 border-blue-200'
-              }`}>
+              <div
+                className={`mb-6 p-4 rounded-lg border ${
+                  loadingMessage.includes("successfully")
+                    ? "bg-green-50 border-green-200"
+                    : "bg-blue-50 border-blue-200"
+                }`}
+              >
                 <div className="flex items-center space-x-2">
-                  <div className={`w-4 h-4 border-2 border-t-transparent rounded-full animate-spin ${
-                    loadingMessage.includes('successfully')
-                      ? 'border-green-600'
-                      : 'border-blue-600'
-                  }`}></div>
-                  <span className={`font-medium ${
-                    loadingMessage.includes('successfully')
-                      ? 'text-green-700'
-                      : 'text-blue-700'
-                  }`}>
+                  <div
+                    className={`w-4 h-4 border-2 border-t-transparent rounded-full animate-spin ${
+                      loadingMessage.includes("successfully")
+                        ? "border-green-600"
+                        : "border-blue-600"
+                    }`}
+                  ></div>
+                  <span
+                    className={`font-medium ${
+                      loadingMessage.includes("successfully")
+                        ? "text-green-700"
+                        : "text-blue-700"
+                    }`}
+                  >
                     {loadingMessage}
                   </span>
                 </div>
@@ -180,7 +202,10 @@ const SignUp = () => {
 
             <div className="space-y-6">
               <div>
-                <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Username
                 </label>
                 <div className="relative">
@@ -199,7 +224,10 @@ const SignUp = () => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -218,7 +246,10 @@ const SignUp = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -239,19 +270,27 @@ const SignUp = () => {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     disabled={loading}
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
                 {password && (
                   <div className="mt-2">
                     <div className="flex items-center space-x-2">
                       <div className="flex-1 bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className={`h-2 rounded-full transition-all duration-300 ${passwordStrength.color}`}
-                          style={{ width: `${(passwordStrength.strength / 5) * 100}%` }}
+                          style={{
+                            width: `${(passwordStrength.strength / 5) * 100}%`,
+                          }}
                         ></div>
                       </div>
-                      <span className="text-xs text-gray-600">{passwordStrength.text}</span>
+                      <span className="text-xs text-gray-600">
+                        {passwordStrength.text}
+                      </span>
                     </div>
                   </div>
                 )}
@@ -265,11 +304,18 @@ const SignUp = () => {
                   onChange={(e) => setAcceptTerms(e.target.checked)}
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                 />
-                <label htmlFor="acceptTerms" className="text-sm text-gray-600 leading-relaxed">
-                  I agree to the{' '}
-                  <Link to="/terms" className="text-blue-600 hover:underline">Terms of Service</Link>
-                  {' '}and{' '}
-                  <Link to="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link>
+                <label
+                  htmlFor="acceptTerms"
+                  className="text-sm text-gray-600 leading-relaxed"
+                >
+                  I agree to the{" "}
+                  <Link to="/login" className="text-blue-600 hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/login" className="text-blue-600 hover:underline">
+                    Privacy Policy
+                  </Link>
                 </label>
               </div>
 
@@ -295,8 +341,11 @@ const SignUp = () => {
 
             <div className="mt-8 pt-6 border-t border-gray-200">
               <p className="text-center text-gray-600">
-                Already have an account?{' '}
-                <Link to="/login" className="text-blue-600 hover:text-blue-500 font-semibold">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-blue-600 hover:text-blue-500 font-semibold"
+                >
                   Sign in
                 </Link>
               </p>
